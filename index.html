@@ -14,7 +14,7 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             color: #ffffff;
             background-color: #000000;
             overflow-x: hidden;
@@ -52,7 +52,7 @@
         
         .title {
             font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
+            font-size: clamp(5rem, 12vw, 10rem);
             font-weight: 600;
             letter-spacing: 0.08em;
             margin-bottom: 20px;
@@ -215,7 +215,7 @@
 </head>
 <body>
     <div class="background-container" id="bgContainer">
-        <img src="background.jpg" alt="Background">
+        <img src="0_0.jpeg" alt="Background">
     </div>
     
     <div class="section hero">
@@ -273,9 +273,6 @@
         <p class="final-text">
             If you have an idea that's been germinating in the back of your mind, that you haven't got around to publishing yet, or that you think is too weird, we would love to hear from you!
         </p>
-        <p class="final-text">
-            Publication will mean being platformed with leaders in the field.
-        </p>
         
         <a href="#" class="pitch-button">PITCH</a>
         
@@ -295,30 +292,8 @@
             });
         }
         
-        // Background opacity fade on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            
-            // Calculate opacity based on scroll position
-            // Start fading after first section, complete fade by final section
-            let opacity = 1;
-            
-            if (scrolled > windowHeight) {
-                const fadeStart = windowHeight;
-                const fadeEnd = documentHeight - windowHeight * 1.5;
-                const fadeRange = fadeEnd - fadeStart;
-                
-                if (scrolled >= fadeEnd) {
-                    opacity = 0;
-                } else {
-                    opacity = 1 - ((scrolled - fadeStart) / fadeRange);
-                }
-            }
-            
-            document.getElementById('bgContainer').style.opacity = Math.max(0, Math.min(1, opacity));
-        });
+        // Background opacity fade on scroll - REMOVED
+        // Keeping background at full opacity
         
         // Add smooth scroll behavior to pitch button
         document.querySelector('.pitch-button').addEventListener('click', (e) => {
