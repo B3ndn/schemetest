@@ -5,237 +5,387 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SCHEME - Stories from the Strange Frontier</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400&family=Playfair+Display:ital@1&family=Inter:wght@300;400;500;600&display=swap');
+       
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+ 
+        html {
+            scroll-behavior: smooth;
+        }
+ 
         body {
-            font-family: 'Times New Roman', Times, serif;
-            color: #ffffff;
-            background-color: #000000;
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: white;
             overflow-x: hidden;
         }
-        
-        .background-container {
+ 
+        /* Fixed Pitch Button */
+        .fixed-pitch {
             position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid white;
+            padding: 12px 24px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+ 
+        .fixed-pitch:hover {
+            background: white;
+            color: #000;
+            transform: translateY(-2px);
+        }
+ 
+        /* Section 1: Title Screen */
+        .section1 {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-image: url('https://i.imgur.com/rXnsKnj.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+       
+        .section1::after {
+            content: "";
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            transition: opacity 0.5s ease;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1;
         }
-        
-        .background-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+       
+        .section1 > * {
+            position: relative;
+            z-index: 2;
         }
-        
-        .section {
+ 
+        .title-container {
+            text-align: center;
+            animation: fadeInDown 1.5s ease-out;
+        }
+ 
+        .main-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(80px, 18vw, 240px);
+            font-weight: 200;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+        }
+ 
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            margin-bottom: 60px;
+        }
+ 
+        .descend {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 20px;
+            opacity: 0.7;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+ 
+        .descend:hover {
+            opacity: 1;
+        }
+ 
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+ 
+        /* Section 2: Who We Are */
+        .section2 {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
-            position: relative;
-        }
-        
-        .hero {
-            text-align: center;
-        }
-        
-        .title {
-            font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-            font-size: clamp(5rem, 12vw, 10rem);
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            margin-bottom: 20px;
-        }
-        
-        .subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.4rem);
-            font-weight: 300;
-            letter-spacing: 0.02em;
-            margin-bottom: 60px;
-            opacity: 0.9;
-        }
-        
-        .descend {
-            font-style: italic;
-            font-size: 1.2rem;
-            opacity: 0.7;
-            animation: float 3s ease-in-out infinite;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        
-        .descend:hover {
-            opacity: 1;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
-        }
-        
-        .content-section {
-            max-width: 900px;
-            margin: 0 auto;
             padding: 80px 20px;
+            position: relative;
+            background-image: url('https://i.imgur.com/rXnsKnj.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+ 
+        .section2::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.5) 100%);
+            z-index: 1;
+        }
+       
+        .section2 > * {
+            position: relative;
+            z-index: 2;
+        }
+ 
+        .mission-text {
+            max-width: 800px;
             text-align: center;
-        }
-        
-        .intro-text {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            line-height: 1.8;
-            margin-bottom: 120px;
-            font-weight: 300;
-        }
-        
-        .ideas-text {
-            font-size: clamp(1rem, 1.8vw, 1.3rem);
+            font-size: clamp(20px, 3vw, 32px);
             line-height: 1.6;
-            margin-bottom: 60px;
             font-weight: 300;
+            margin-bottom: 40px;
         }
-        
+ 
+        /* Section 3: Pitch Ideas */
+        .section3 {
+            min-height: 100vh;
+            padding: 80px 20px;
+            position: relative;
+            background-image: url('https://i.imgur.com/rXnsKnj.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+ 
+        .section3::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg,
+                rgba(0, 0, 0, 0.7) 0%,
+                rgba(0, 0, 0, 0.85) 100%);
+            z-index: 1;
+        }
+       
+        .section3 > * {
+            position: relative;
+            z-index: 2;
+        }
+ 
+        .pitch-intro {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 60px;
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+ 
         .boxes-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-bottom: 60px;
-            text-align: left;
+            max-width: 1200px;
+            margin: 0 auto 60px;
         }
-        
+ 
         .box {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 30px;
+            border-radius: 10px;
             transition: all 0.3s ease;
         }
-        
+ 
         .box:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.15);
             transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
-        
+ 
         .box h3 {
-            font-size: 1.3rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 0.05em;
             margin-bottom: 20px;
-            font-weight: 500;
-            color: #ffffff;
+            color: #fff;
         }
-        
+ 
         .box ul {
             list-style: none;
             padding: 0;
         }
-        
+ 
         .box li {
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             padding-left: 20px;
             position: relative;
+            font-size: 14px;
             line-height: 1.5;
-            font-size: 0.95rem;
-            opacity: 0.85;
+            opacity: 0.9;
         }
-        
+ 
         .box li:before {
             content: "•";
             position: absolute;
             left: 0;
-            opacity: 0.5;
+            color: rgba(255, 255, 255, 0.6);
         }
-        
-        .note-text {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            font-style: italic;
-            opacity: 0.9;
-            margin-bottom: 120px;
-        }
-        
-        .final-section {
-            background-color: #000000;
-            padding: 100px 20px;
+ 
+        .disclaimer {
             text-align: center;
-            position: relative;
-            z-index: 1;
+            max-width: 800px;
+            margin: 40px auto;
+            font-style: italic;
+            opacity: 0.8;
+            font-size: 16px;
+            line-height: 1.5;
         }
-        
+ 
+        /* Section 4: Final Call */
+        .section4 {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            background: #000;
+            text-align: center;
+        }
+ 
         .final-text {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            line-height: 1.8;
+            max-width: 800px;
             margin-bottom: 40px;
+        }
+ 
+        .final-text p {
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.6;
+            margin-bottom: 30px;
             font-weight: 300;
         }
-        
+ 
         .pitch-button {
             display: inline-block;
-            padding: 15px 40px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: white;
             background: transparent;
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: 3px solid white;
+            padding: 20px 60px;
             margin: 40px 0;
+            cursor: pointer;
             text-decoration: none;
+            transition: all 0.4s ease;
         }
-        
+ 
         .pitch-button:hover {
-            background: #ffffff;
-            color: #000000;
-            transform: scale(1.05);
+            background: white;
+            color: #000;
+            transform: translateY(-2px);
         }
-        
+ 
         .closing {
             margin-top: 60px;
-            font-size: 1.1rem;
+            font-size: 18px;
             line-height: 1.8;
             opacity: 0.9;
         }
-        
+ 
         .signature {
             margin-top: 30px;
             font-style: italic;
-            opacity: 0.8;
+            opacity: 0.7;
+        }
+ 
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+ 
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .fixed-pitch {
+                top: 15px;
+                right: 15px;
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+ 
+            .boxes-container {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="background-container" id="bgContainer">
-        <img src="background.jpg" alt="Background">
-    </div>
-    
-    <div class="section hero">
-        <h1 class="title">SCHEME</h1>
-        <p class="subtitle">Stories from the Strange Frontier</p>
-        <div class="descend" onclick="smoothScroll()">↓ Descend ↓</div>
-    </div>
-    
-    <div class="content-section">
-        <p class="intro-text">
-            Our goal is to platform voices and perspectives that would otherwise get lost in the ether, slop or drudge of AI discourse.<br><br>
-            We are looking for an open-minded orientation to the future, in all its strange complexity.
-        </p>
-        
-        <p class="ideas-text">
-            We want to hear your ideas on what the future can and ought to look like, and how we should go about getting there.
-        </p>
-        
+    <!-- Fixed Pitch Button -->
+    <a href=https://docs.google.com/document/d/1dSi3d_t631_AUT3jyy4M8OqVm53x8vzIJCkl56RoZL8/edit?usp=sharing
+       target="_blank"
+       class="fixed-pitch">
+        Pitch
+    </a>
+ 
+    <!-- Section 1: Title Screen -->
+    <section class="section1">
+        <div class="title-container">
+            <h1 class="main-title">SCHEME</h1>
+            <p class="subtitle">Stories from the Strange Frontier</p>
+            <div class="descend" onclick="document.getElementById('section2').scrollIntoView({behavior: 'smooth'})">
+                ↓ Descend ↓
+            </div>
+        </div>
+    </section>
+ 
+    <!-- Section 2: Who We Are -->
+    <section class="section2" id="section2">
+        <div class="mission-text">
+            <p>Our goal is to platform voices and perspectives that would otherwise get lost in the ether, slop or drudge of AI discourse.</p>
+            <p style="margin-top: 30px;">We are looking for an open-minded orientation to the future, in all its strange complexity.</p>
+        </div>
+    </section>
+ 
+    <!-- Section 3: Pitch Ideas -->
+    <section class="section3">
+        <div class="pitch-intro">
+            <p>We want to hear your ideas on what the future can and ought to look like, and how we should go about getting there.</p>
+        </div>
+ 
         <div class="boxes-container">
             <div class="box">
                 <h3>Analytic Writing</h3>
@@ -245,7 +395,7 @@
                     <li>What would a handover to a new species look like? Should it happen?</li>
                 </ul>
             </div>
-            
+ 
             <div class="box">
                 <h3>Narrative Journalism</h3>
                 <ul>
@@ -254,7 +404,7 @@
                     <li>A look at AI related cults/new religious movements</li>
                 </ul>
             </div>
-            
+ 
             <div class="box">
                 <h3>Short Fiction</h3>
                 <ul>
@@ -265,68 +415,30 @@
                 </ul>
             </div>
         </div>
-        
-        <p class="note-text">
-            Treat these examples as illustrative rather than prescriptive! We are mostly interested in what you have to say, as long as it's a sensitive, informed look at the frontier today, or a view into the future.
-        </p>
-    </div>
-    
-    <div class="final-section">
-        <p class="final-text">
-            If you have an idea that's been germinating in the back of your mind, that you haven't got around to publishing yet, or that you think is too weird, we would love to hear from you!
-        </p>
-        
-        <a href="#" class="pitch-button">PITCH</a>
-        
-        <div class="closing">
-            <p>The future is open for debate.</p>
-            <p>We hope you will join us.</p>
-            <p class="signature">— Josh, Ben and Aniket</p>
+ 
+        <div class="disclaimer">
+            <p>Treat these examples as illustrative rather than prescriptive! We are mostly interested in what you have to say, as long as it's a sensitive, informed look at the frontier today, or a view into the future.</p>
         </div>
-    </div>
-    
-    <script>
-        // Smooth scroll function
-        function smoothScroll() {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Background opacity fade on scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            
-            // Calculate opacity based on scroll position
-            // Smooth fade that completes before the final section
-            let opacity = 1;
-            
-            if (scrolled > windowHeight * 0.5) {
-                const fadeStart = windowHeight * 0.5;
-                const fadeEnd = documentHeight - windowHeight * 2; // Complete fade earlier
-                const fadeRange = fadeEnd - fadeStart;
-                
-                if (scrolled >= fadeEnd) {
-                    opacity = 0;
-                } else {
-                    const progress = (scrolled - fadeStart) / fadeRange;
-                    // Use easing function for smoother transition
-                    opacity = 1 - (progress * progress);
-                }
-            }
-            
-            document.getElementById('bgContainer').style.opacity = Math.max(0, Math.min(1, opacity));
-        });
-        
-        // Add smooth scroll behavior to pitch button
-        document.querySelector('.pitch-button').addEventListener('click', (e) => {
-            e.preventDefault();
-            // Add your pitch form logic here
-            alert('Pitch submission form would open here');
-        });
-    </script>
+    </section>
+ 
+    <!-- Section 4: Final Call -->
+    <section class="section4">
+        <div class="final-text">
+            <p>If you have an idea that's been germinating in the back of your mind, that you haven't got around to publishing yet, or that you think is too weird, we would love to hear from you!</p>
+            <p>Publication will mean being platformed with leaders in the field.</p>
+           
+            <a href=https://docs.google.com/document/d/1dSi3d_t631_AUT3jyy4M8OqVm53x8vzIJCkl56RoZL8/edit?usp=sharing
+               target="_blank"
+               class="pitch-button">
+                PITCH
+            </a>
+           
+            <div class="closing">
+                <p>The future is open for debate.</p>
+                <p>We hope you will join us.</p>
+                <p class="signature">— Josh, Ben and Aniket</p>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
