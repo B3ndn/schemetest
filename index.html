@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCHEME.ZONE - Stories from the Strange Frontier</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Dark mode (default) */
+        body {
+            background: #0a0805;
+            min-height: 700vh;
+            font-family: Georgia, serif;
+            color: #d4c4a0;
+            position: relative;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        /* Light mode */
+        body.light-mode {
+            background: #f8f6f0;
+            color: #1a1611;
+        }
+        
+        body.light-mode .statement,
+        body.light-mode .manifesto,
+        body.light-mode .category-items {
+            color: #1a1611;
+        }
+        
+        body.light-mode .statement strong {
+            color: #d80;
+            text-shadow: 0 0 20px rgba(221, 136, 0, 0.3);
+        }
+        
+        body.light-mode .manifesto {
+            color: rgba(26, 22, 17, 0.9);
+            border-color: rgba(221, 136, 0, 0.3);
+        }
+        
+        body.light-mode .category-card {
+            background: linear-gradient(135deg, 
+                rgba(221, 136, 0, 0.02) 0%, 
+                rgba(102, 51, 153, 0.02) 100%);
+            border-color: rgba(221, 136, 0, 0.2);
+        }
+        
+        body.light-mode .category-card:hover {
+            background: linear-gradient(135deg, 
+                rgba(221, 136, 0, 0.05) 0%, 
+                rgba(102, 51, 153, 0.05) 100%);
+            border-color: rgba(221, 136, 0, 0.5);
+            box-shadow: 0 10px 40px rgba(221, 136, 0, 0.1);
+        }
+        
+        body.light-mode .category-items {
+            color: rgba(26, 22, 17, 0.7);
+        }
+        
+        body.light-mode .category-items li:hover {
+            color: #1a1611;
+            background: rgba(221, 136, 0, 0.02);
+        }
+        
+        body.light-mode .invitation {
+            background: rgba(102, 51, 153, 0.03);
+            border-color: rgba(102, 51, 153, 0.2);
+        }
+        
+        body.light-mode .submit-portal {
+            border-color: #d80;
+            color: #d80;
+        }
+        
+        body.light-mode .submit-portal:hover {
+            background: #d80;
+            color: #f8f6f0;
+            box-shadow: 0 0 30px rgba(221, 136, 0, 0.5);
+        }
+        
+        body.light-mode .depth-display {
+            color: #d80;
+        }
+        
+        body.light-mode .depth-display .number {
+            color: #d80;
+            text-shadow: 0 0 10px rgba(221, 136, 0, 0.5);
+        }
+        
+        body.light-mode .scroll-hint {
+            color: #d80;
+        }
+        
+        body.light-mode .tagline {
+            color: #d80;
+        }
+        
+        body.light-mode .category-title {
+            color: #d80;
+            border-color: rgba(221, 136, 0, 0.2);
+        }
+        
+        body.light-mode .category-items li {
+            border-color: rgba(221, 136, 0, 0.05);
+        }
+        
+        body.light-mode .category-items li::before {
+            color: #6639cc;
+        }
+        
+        body.light-mode .category-items li:hover::before {
+            color: #d80;
+        }
+        
+        body.light-mode .signatures {
+            color: #6639cc;
+        }
+        
+        body.light-mode .corner-decoration {
+            border-color: rgba(221, 136, 0, 0.2);
+        }
+        
+        body.light-mode #scheme-core {
+            background: linear-gradient(180deg, #d80 0%, #6639cc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Mode toggle */
+        .mode-toggle {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            width: 60px;
+            height: 30px;
+            background: rgba(255, 94, 0, 0.1);
+            border: 1px solid rgba(255, 94, 0, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .mode-toggle {
+            background: rgba(221, 136, 0, 0.05);
+            border-color: rgba(221, 136, 0, 0.3);
+        }
+        
+        .mode-toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: #ff5e00;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode .mode-toggle-slider {
+            left: 33px;
+            background: #d80;
+        }
+        
+        .mode-label {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.5;
+            color: #ff5e00;
+        }
+        
+        .light-mode .mode-label {
+            color: #d80;
+        }
+        
+        /* Evolving background with image */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('0_0.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: all 4s ease;
+            pointer-events: none;
+            z-index: -3;
+        }
+        
+        /* Overlay for dark mode */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, rgba(10, 8, 5, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%);
+            transition: all 4s ease;
+            pointer-events: none;
+            z-index: -2;
+        }
+        
+        .light-mode .background-overlay {
+            background: radial-gradient(ellipse at center, rgba(248, 246, 240, 0.7) 0%, rgba(232, 226, 213, 0.85) 100%);
+        }
+        
+        /* Scan lines overlay */
+        .scanlines {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.4;
+        }
+        
+        .light-mode .scanlines {
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.05),
+                rgba(0, 0, 0, 0.05) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            opacity: 0.3;
+        }
+        
+        /* Technical grid that intensifies with depth */
+        .grid-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255, 94, 0, 0.02) 39px, rgba(255, 94, 0, 0.02) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255, 94, 0, 0.02) 39px, rgba(255, 94, 0, 0.02) 40px);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 3s ease;
+        }
+        
+        .light-mode .grid-bg {
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(221, 136, 0, 0.02) 39px, rgba(221, 136, 0, 0.02) 40px),
+                repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(221, 136, 0, 0.02) 39px, rgba(221, 136, 0, 0.02) 40px);
+        }
+        
+        /* SCHEME emerges from the depths */
+        #scheme-core {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(100px, 15vw, 200px);
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 4s ease;
+            background: linear-gradient(180deg, #ff5e00 0%, #8a2be2 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: subtle-breathe 8s infinite ease-in-out;
+        }
+        
+        @keyframes subtle-breathe {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.02); }
+        }
+        
+        /* Depth counter */
+        .depth-display {
+            position: fixed;
+            right: 40px;
+            bottom: 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.6;
+            z-index: 100;
+            color: #ff5e00;
+        }
+        
+        .depth-display .number {
+            font-size: 24px;
+            display: block;
+            color: #ff5e00;
+            text-shadow: 0 0 10px rgba(255, 94, 0, 0.5);
+        }
+        
+        /* Entry portal */
+        .entrance {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .entrance h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(60px, 10vw, 120px);
+            font-weight: 900;
+            letter-spacing: 0.4em;
+            background: linear-gradient(180deg,
+                #ffffff 0%,
+                #f4f4f4 20%,
+                #888888 50%,
+                #666666 52%,
+                #333333 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gentle-float 6s infinite ease-in-out;
+        }
+        
+        @keyframes gentle-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .entrance .tagline {
+            margin-top: 30px;
+            font-size: 16px;
+            font-style: italic;
+            opacity: 0.6;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #ff5e00;
+        }
+        
+        .issue-badge {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: #ff5e00;
+            color: #0a0805;
+            padding: 5px 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            transform: rotate(3deg);
+        }
+        
+        .light-mode .issue-badge {
+            background: #d80;
+            color: #f8f6f0;
+        }
+        
+        .scroll-hint {
+            position: absolute;
+            bottom: 60px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #ff5e00;
+            opacity: 0.4;
+            animation: fade-pulse 3s infinite;
+        }
+        
+        @keyframes fade-pulse {
+            0%, 100% { opacity: 0.4; transform: translateY(0); }
+            50% { opacity: 0.7; transform: translateY(5px); }
+        }
+        
+        /* Content sections with proper spacing */
+        .content-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            position: relative;
+        }
+        
+        .content-block {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+        
+        .content-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .content-block.fading {
+            opacity: 0.2;
+            transform: translateY(-20px);
+        }
+        
+        /* Statement blocks */
+        .statement {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: clamp(22px, 3.5vw, 32px);
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 300;
+            color: #d4c4a0;
+        }
+        
+        .statement strong {
+            color: #ff5e00;
+            font-weight: 400;
+            text-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
+        }
+        
+        /* Manifesto blocks */
+        .manifesto {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: clamp(18px, 2.5vw, 24px);
+            line-height: 1.8;
+            text-align: center;
+            font-style: italic;
+            color: rgba(212, 196, 160, 0.9);
+            padding: 40px;
+            border-left: 2px solid rgba(255, 94, 0, 0.3);
+            border-right: 2px solid rgba(255, 94, 0, 0.3);
+        }
+        
+        /* Categories grid with retro cards */
+        .categories {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 40px;
+        }
+        
+        .category-card {
+            padding: 30px;
+            background: linear-gradient(135deg, 
+                rgba(255, 94, 0, 0.02) 0%, 
+                rgba(138, 43, 226, 0.02) 100%);
+            border: 1px solid rgba(255, 94, 0, 0.2);
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff5e00, transparent);
+            animation: scan 3s linear infinite;
+        }
+        
+        .light-mode .category-card::before {
+            background: linear-gradient(90deg, transparent, #d80, transparent);
+        }
+        
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .category-card:hover {
+            background: linear-gradient(135deg, 
+                rgba(255, 94, 0, 0.05) 0%, 
+                rgba(138, 43, 226, 0.05) 100%);
+            border-color: rgba(255, 94, 0, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(255, 94, 0, 0.1);
+        }
+        
+        .category-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #ff5e00;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 94, 0, 0.2);
+        }
+        
+        .category-items {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(212, 196, 160, 0.7);
+        }
+        
+        .category-items li {
+            list-style: none;
+            padding: 12px 0;
+            padding-left: 20px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 94, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .category-items li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #8a2be2;
+            transition: all 0.3s ease;
+        }
+        
+        .category-items li:hover {
+            color: #d4c4a0;
+            padding-left: 30px;
+            background: rgba(255, 94, 0, 0.02);
+        }
+        
+        .category-items li:hover::before {
+            color: #ff5e00;
+            transform: translateX(5px);
+        }
+        
+        /* Invitation portal */
+        .invitation {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 60px 40px;
+            background: rgba(138, 43, 226, 0.03);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            position: relative;
+        }
+        
+        .invitation::before {
+            content: 'SUBMIT';
+            position: absolute;
+            top: -30px;
+            right: -40px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 6rem;
+            font-weight: 700;
+            color: rgba(138, 43, 226, 0.05);
+            transform: rotate(-10deg);
+            z-index: 0;
+        }
+        
+        .light-mode .invitation::before {
+            color: rgba(102, 51, 153, 0.05);
+        }
+        
+        .invitation p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 20px 0;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Submit portal button */
+        .submit-portal {
+            display: inline-block;
+            margin: 40px auto;
+            padding: 20px 50px;
+            background: transparent;
+            border: 2px solid #ff5e00;
+            color: #ff5e00;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-portal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 94, 0, 0.1);
+            transition: left 0.5s ease;
+        }
+        
+        .light-mode .submit-portal::before {
+            background: rgba(221, 136, 0, 0.1);
+        }
+        
+        .submit-portal:hover {
+            color: #0a0805;
+            background: #ff5e00;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 94, 0, 0.5);
+        }
+        
+        .submit-portal:hover::before {
+            left: 0;
+        }
+        
+        /* Closing transmission */
+        .closing {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px;
+            font-size: 16px;
+            opacity: 0.7;
+        }
+        
+        .light-mode .closing {
+            opacity: 0.8;
+        }
+        
+        .signatures {
+            margin-top: 20px;
+            font-style: italic;
+            letter-spacing: 0.2em;
+            color: #8a2be2;
+        }
+        
+        /* Corner markers */
+        .corner-decoration {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border: 1px solid rgba(255, 94, 0, 0.2);
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+        
+        .corner-decoration.top-left {
+            top: 20px;
+            left: 20px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .categories {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .depth-display {
+                right: 20px;
+                bottom: 20px;
+            }
+            
+            .mode-toggle {
+                top: 20px;
+                left: 20px;
+            }
+            
+            .issue-badge {
+                top: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="background-overlay"></div>
+    <div class="grid-bg"></div>
+    <div class="scanlines"></div>
+    <div id="scheme-core">SCHEME</div>
+    
+    <div class="corner-decoration top-left"></div>
+    <div class="corner-decoration bottom-right"></div>
+    
+    <!-- Light/Dark mode toggle -->
+    <div class="mode-toggle" onclick="toggleMode()">
+        <div class="mode-label">MODE</div>
+        <div class="mode-toggle-slider"></div>
+    </div>
+    
+    <div class="depth-display">
+        <span class="number">0</span>
+        <span>fathoms deep</span>
+    </div>
+    
+    <!-- Entry portal -->
+    <div class="entrance">
+        <div class="issue-badge">TRANSMISSION 001</div>
+        <h1>SCHEME</h1>
+        <p class="tagline">Stories from the Strange Frontier</p>
+        <div class="scroll-hint">↓ Descend ↓</div>
+    </div>
+    
+    <!-- Section 1 -->
+    <div class="content-section">
+        <div class="content-block" data-depth="100">
+            <div class="statement">
+                Another <strong>SCHEME</strong> enters the world.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 2 -->
+    <div class="content-section">
+        <div class="content-block" data-depth="200">
+            <div class="manifesto">
+                Our goal is to platform voices and perspectives that would otherwise get lost in the ether, slop or drudge of AI discourse.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 3 -->
+    <div class="content-section">
+        <div class="content-block" data-depth="400">
+            <div class="statement">
+                We are looking for an <strong>open-minded orientation to the future</strong>, in all its strange complexity.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 4 -->
+    <div class="content-section">
+        <div class="content-block" data-depth="600">
+            <div class="manifesto">
+                We want to hear your ideas on what the future can and ought to look like, and how we should go about getting there.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 5 - Categories -->
+    <div class="content-section" style="min-height: auto;">
+        <div class="content-block" data-depth="900">
+            <div class="categories">
+                <div class="category-card">
+                    <h3 class="category-title">Analytic Writing</h3>
+                    <ul class="category-items">
+                        <li>A deep dive on the Chinese AI community — the key players, how they got to their positions</li>
+                        <li>An investigation into post AGI welfare proposals, and why UBI advocates are thinking too small</li>
+                        <li>What would a handover to a new species look like? Should it happen?</li>
+                    </ul>
+                </div>
+                
+                <div class="category-card">
+                    <h3 class="category-title">Narrative Journalism</h3>
+                    <ul class="category-items">
+                        <li>A look at past futurist movements, going back to Wells, and comparing to futurism today</li>
+                        <li>An account of just how easy it would be to launch an AI assisted coup</li>
+                        <li>A look at AI related cults/new religious movements</li>
+                    </ul>
+                </div>
+                
+                <div class="category-card">
+                    <h3 class="category-title">Short Fiction</h3>
+                    <ul class="category-items">
+                        <li>A story of the first AI labour strike</li>
+                        <li>Day in the life of an ordinary person in a post-AGI world</li>
+                        <li>What if we're wrong? A story where AI had negligible impact</li>
+                        <li>The underground railroad of people who refuse AI integration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 6 -->
+    <div class="content-section">
+        <div class="content-block" data-depth="1200">
+            <div class="manifesto">
+                Treat these examples as illustrative rather than prescriptive! We are mostly interested in what you have to say, as long as it's a sensitive, informed look at the frontier today, or a view into the future.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 7 - Call to action -->
+    <div class="content-section">
+        <div class="content-block" data-depth="1400">
+            <div class="invitation">
+                <p>Publication will mean being platformed with leaders in the field.</p>
+                <p>We are willing to commission truly outstanding pieces.</p>
+                <p>If you have an idea that's been germinating in the back of your mind, that you haven't got around to publishing yet, or that you think is too weird, we would love to hear from you!</p>
+                <a href="mailto:pitch@scheme.zone" class="submit-portal">pitch@scheme.zone</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Section 8 - Closing -->
+    <div class="content-section">
+        <div class="content-block" data-depth="1800">
+            <div class="closing">
+                <p>The future is open for debate.</p>
+                <p>We hope you will join us.</p>
+                <div class="signatures">— Josh, Ben and Aniket</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let depth = 0;
+        let isLightMode = false;
+        
+        // Check for saved preference
+        if (localStorage.getItem('scheme-mode') === 'light') {
+            document.body.classList.add('light-mode');
+            isLightMode = true;
+        }
+        
+        // Toggle mode function
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            isLightMode = !isLightMode;
+            localStorage.setItem('scheme-mode', isLightMode ? 'light' : 'dark');
+        }
+        
+        window.addEventListener('scroll', () => {
+            depth = window.scrollY;
+            
+            // Update depth display (convert to fathoms for nautical/mysterious feel)
+            const fathoms = Math.floor(depth / 10);
+            document.querySelector('.depth-display .number').textContent = fathoms;
+            
+            // Gradually change overlay opacity based on scroll depth
+            const overlay = document.querySelector('.background-overlay');
+            const depthRatio = Math.min(depth / 4000, 1);
+            
+            if (!isLightMode) {
+                // Dark mode: gradually darken the overlay
+                const opacity = 0.7 + (depthRatio * 0.2);
+                overlay.style.background = `radial-gradient(ellipse at center, 
+                    rgba(10, 8, 5, ${opacity}) 0%, 
+                    rgba(0, 0, 0, ${Math.min(0.9 + depthRatio * 0.1, 1)}) 100%)`;
+            } else {
+                // Light mode: gradually lighten the overlay
+                const opacity = 0.7 + (depthRatio * 0.15);
+                overlay.style.background = `radial-gradient(ellipse at center, 
+                    rgba(248, 246, 240, ${opacity}) 0%, 
+                    rgba(232, 226, 213, ${Math.min(0.85 + depthRatio * 0.1, 0.95)}) 100%)`;
+            }
