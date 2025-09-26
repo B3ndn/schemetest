@@ -27,7 +27,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.5s ease;
         }
         
         .background-container img {
@@ -168,6 +168,8 @@
             background-color: #000000;
             padding: 100px 20px;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         
         .final-text {
@@ -292,8 +294,32 @@
             });
         }
         
-        // Background opacity fade on scroll - REMOVED
-        // Keeping background at full opacity
+        // Background opacity fade on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Calculate opacity based on scroll position
+            // Smooth fade that completes before the final section
+            let opacity = 1;
+            
+            if (scrolled > windowHeight * 0.5) {
+                const fadeStart = windowHeight * 0.5;
+                const fadeEnd = documentHeight - windowHeight * 2; // Complete fade earlier
+                const fadeRange = fadeEnd - fadeStart;
+                
+                if (scrolled >= fadeEnd) {
+                    opacity = 0;
+                } else {
+                    const progress = (scrolled - fadeStart) / fadeRange;
+                    // Use easing function for smoother transition
+                    opacity = 1 - (progress * progress);
+                }
+            }
+            
+            document.getElementById('bgContainer').style.opacity = Math.max(0, Math.min(1, opacity));
+        });
         
         // Add smooth scroll behavior to pitch button
         document.querySelector('.pitch-button').addEventListener('click', (e) => {
